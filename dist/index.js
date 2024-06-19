@@ -31,9 +31,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BinanceWallet = exports.NoBinanceError = void 0;
+exports.BinanceWallet = void 0;
 const types_1 = require("@web3-react/types");
+const detect_provider_1 = __importDefault(require("./detect-provider"));
 class NoBinanceError extends Error {
     constructor() {
         super("Binance not installed");
@@ -41,7 +45,6 @@ class NoBinanceError extends Error {
         Object.setPrototypeOf(this, NoBinanceError.prototype);
     }
 }
-exports.NoBinanceError = NoBinanceError;
 function parseChainId(chainId) {
     return Number.parseInt(chainId, 16);
 }
@@ -90,54 +93,58 @@ class BinanceWallet extends types_1.Connector {
     }
     isomorphicInitialize() {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g;
             if (this.eagerConnection)
                 return;
-            return (this.eagerConnection = Promise.resolve().then(() => __importStar(require("./detect-provider"))).then((m) => __awaiter(this, void 0, void 0, function* () {
-                var _a, _b, _c, _d, _e, _f, _g;
-                const provider = yield m.default(this.options);
-                if (provider) {
-                    this.provider = provider;
-                    // handle the case when e.g. Binance and coinbase wallet are both installed
-                    if ((_a = this.provider.providers) === null || _a === void 0 ? void 0 : _a.length) {
-                        this.provider =
-                            (_b = this.provider.providers.find((p) => p.isBinance)) !== null && _b !== void 0 ? _b : this.provider.providers[0];
-                    }
-                    this.provider.on("connect", this.handleConnect);
-                    this.provider.on("disconnect", this.handleDisconnect);
-                    this.provider.on("close", this.handleDisconnect);
-                    this.provider.on("chainChanged", this.handleChainChanged);
-                    this.provider.on("accountsChanged", this.handleAccountsChanged);
+            const provider = yield (0, detect_provider_1.default)(this.options);
+            if (provider) {
+                this.provider = provider;
+                // handle the case when e.g. Binance and coinbase wallet are both installed
+                if ((_a = this.provider.providers) === null || _a === void 0 ? void 0 : _a.length) {
+                    this.provider =
+                        (_b = this.provider.providers.find((p) => p.isBinance)) !== null && _b !== void 0 ? _b : this.provider.providers[0];
                 }
-                else {
-                    if (!this.provider) {
-                        const m = yield Promise.resolve().then(() => __importStar(require("@binance/w3w-ethereum-provider")));
-                        const BinanceEthereumProvider = m.default;
-                        this.provider = new BinanceEthereumProvider({
-                            showQrCodeModal: true,
-                            lng: "en",
-                        });
-                        this.provider.isBinance = true;
-                        this.isBinanceConnector = true;
-                    }
-                    // Workaround to bubble up the error when user reject the connection
-                    // @ts-ignore
-                    this.provider.connector.on("disconnect", () => {
-                        var _a, _b;
-                        // Check provider has not been enabled to prevent this event callback from being called in the future
-                        if (!((_b = (_a = this.provider) === null || _a === void 0 ? void 0 : _a.accounts) === null || _b === void 0 ? void 0 : _b.length)) {
-                            console.debug("connector disconnect");
-                            // userReject: Erase the provider manually
-                            this.provider = undefined;
-                            this.eagerConnection = undefined;
-                        }
+                this.provider.on("connect", this.handleConnect);
+                this.provider.on("disconnect", this.handleDisconnect);
+                this.provider.on("close", this.handleDisconnect);
+                this.provider.on("chainChanged", this.handleChainChanged);
+                this.provider.on("accountsChanged", this.handleAccountsChanged);
+            }
+            else {
+                if (!this.provider) {
+                    const m = yield Promise.resolve().then(() => __importStar(require("@binance/w3w-ethereum-provider")));
+                    const BinanceEthereumProvider = m.default;
+                    this.provider = new BinanceEthereumProvider({
+                        showQrCodeModal: true,
+                        lng: "en",
                     });
-                    (_c = this.provider) === null || _c === void 0 ? void 0 : _c.on("connect", this.handleConnect);
-                    (_d = this.provider) === null || _d === void 0 ? void 0 : _d.on("disconnect", this.handleDisconnect);
-                    (_e = this.provider) === null || _e === void 0 ? void 0 : _e.on("close", this.handleDisconnect);
-                    (_f = this.provider) === null || _f === void 0 ? void 0 : _f.on("chainChanged", this.handleChainChanged);
-                    (_g = this.provider) === null || _g === void 0 ? void 0 : _g.on("accountsChanged", this.handleAccountsChanged);
+                    this.provider.isBinance = true;
+                    this.isBinanceConnector = true;
                 }
-            })));
+                // Workaround to bubble up the error when user reject the connection
+                // @ts-ignore
+                this.provider.connector.on("disconnect", () => {
+                    var _a, _b;
+                    // Check provider has not been enabled to prevent this event callback from being called in the future
+                    if (!((_b = (_a = this.provider) === null || _a === void 0 ? void 0 : _a.accounts) === null || _b === void 0 ? void 0 : _b.length)) {
+                        console.debug("connector disconnect");
+                        // userReject: Erase the provider manually
+                        this.provider = undefined;
+                        this.eagerConnection = undefined;
+                    }
+                });
+                (_c = this.provider) === null || _c === void 0 ? void 0 : _c.on("connect", this.handleConnect);
+                (_d = this.provider) === null || _d === void 0 ? void 0 : _d.on("disconnect", this.handleDisconnect);
+                (_e = this.provider) === null || _e === void 0 ? void 0 : _e.on("close", this.handleDisconnect);
+                (_f = this.provider) === null || _f === void 0 ? void 0 : _f.on("chainChanged", this.handleChainChanged);
+                (_g = this.provider) === null || _g === void 0 ? void 0 : _g.on("accountsChanged", this.handleAccountsChanged);
+            }
+            this.eagerConnection = Promise.resolve(true);
+            // return (this.eagerConnection = import("./detect-provider").then(
+            //   async (m) => {
+            //      const provider = await m.default(this.options);
+            //   }
+            // ));
         });
     }
     /** {@inheritdoc Connector.connectEagerly} */
@@ -312,3 +319,4 @@ class BinanceWallet extends types_1.Connector {
     }
 }
 exports.BinanceWallet = BinanceWallet;
+exports.default = BinanceWallet;

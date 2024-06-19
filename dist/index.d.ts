@@ -15,9 +15,6 @@ export type BinanceWalletProvider = {
     accounts?: string[];
     connector?: any;
 };
-export declare class NoBinanceError extends Error {
-    constructor();
-}
 /**
  * @param options - Options to pass to `binance/detect-provider`
  * @param onError - Handler to report errors thrown from eventListeners.
@@ -57,4 +54,4 @@ export declare class BinanceWallet extends Connector {
     deactivate(): Promise<void>;
     watchAsset({ address, symbol, decimals, image, }: WatchAssetParameters): Promise<true>;
 }
-export {};
+export default BinanceWallet;
