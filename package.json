@@ -21,7 +21,6 @@
   ],
   "types": "./src/index.ts",
   "main": "./src/index.ts",
-  "exports": "./src/index.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "prebuild": "rm -rf dist",

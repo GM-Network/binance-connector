@@ -10,7 +10,7 @@ import { Connector } from "@web3-react/types";
 import BinanceEthereumProvider from "@binance/w3w-ethereum-provider";
 import detectEthereumProvider from "./detect-provider";
 
-export type BinanceWalletProvider = {
+export interface BinanceWalletProvider {
   isBinance?: boolean;
   request(args: RequestArguments): Promise<any>;
   on: (event: string, args: any) => any;
@@ -25,7 +25,7 @@ export type BinanceWalletProvider = {
   connected?: boolean;
   accounts?: string[];
   connector?: any;
-};
+}
 
 class NoBinanceError extends Error {
   public constructor() {
