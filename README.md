@@ -1,1 +1,1 @@
-# @gmnetwork/binance-connector
+# @gm-network/binance-connector

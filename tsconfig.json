@@ -1,12 +1,15 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json",
+  "include": ["./src"],
   "compilerOptions": {
-    "module": "CommonJS",
     "declaration": true,
     "moduleResolution": "Node",
-    "jsx": "react",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "target": "ES2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"],
   "exclude": ["**/*.spec.ts"]
 }
