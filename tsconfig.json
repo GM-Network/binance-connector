@@ -1,14 +1,15 @@
 {
-  "include": ["./src","src/**/*"],
+  "include": ["./src"],
   "compilerOptions": {
-    "target": "es5",
+    "declaration": true,
+    "moduleResolution": "Node",
+    "outDir": "./dist",
+    "target": "ES2015",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
-    "outDir": "./dist"
+    "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["**/*.spec.ts","node_modules"]
+  "exclude": ["**/*.spec.ts"]
 }
