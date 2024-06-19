@@ -17,12 +17,11 @@
     "registry": "https://npm.pkg.github.com"
   },
   "files": [
-    "dist/*"
+    "src/*"
   ],
-  "type": "commonjs",
-  "types": "./dist/index.d.ts",
-  "main": "./dist/index.js",
-  "exports": "./dist/index.js",
+  "types": "./src/index.ts",
+  "main": "./src/index.ts",
+  "exports": "./src/index.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "prebuild": "rm -rf dist",
