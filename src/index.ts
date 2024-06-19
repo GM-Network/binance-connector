@@ -7,6 +7,7 @@ import {
   WatchAssetParameters,
 } from "@web3-react/types";
 import { Connector } from "@web3-react/types";
+import BinanceEthereumProvider from "@binance/w3w-ethereum-provider";
 import detectEthereumProvider from "./detect-provider";
 
 export type BinanceWalletProvider = {
@@ -129,8 +130,8 @@ export class BinanceWallet extends Connector {
       this.provider.on("accountsChanged", this.handleAccountsChanged);
     } else {
       if (!this.provider) {
-        const m = await import("@binance/w3w-ethereum-provider");
-        const BinanceEthereumProvider = m.default;
+        // const m = await import("@binance/w3w-ethereum-provider");
+        // const BinanceEthereumProvider = m.default;
 
         this.provider = new BinanceEthereumProvider({
           showQrCodeModal: true,
